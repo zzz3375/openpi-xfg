@@ -400,6 +400,47 @@ class LeRobotLiberoDataConfig(DataConfigFactory):
             model_transforms=model_transforms,
         )
 
+import openpi.policies.piper_policy as piper_policy
+
+@dataclasses.dataclass(frozen=True)
+class LeRobotPiperV21DataConfig(DataConfigFactory):
+    
+    extra_delta_transform: bool = False
+    @override
+    def create(self, assets_dirs: pathlib.Path, model_config: _model.BaseModelConfig) -> DataConfig:
+        repack_transform = _transforms.Group(
+            inputs=[_transforms.RepackTransform({
+                "observation/image": "observation.images.exterior_1",
+                "observation/wrist_image": "observation.images.wrist",
+                "observation/state": "observation.state",
+                "actions": "action",
+                "prompt": "prompt",
+            })]
+        )
+        data_transforms = _transforms.Group(
+            inputs=[piper_policy.PiperInputs(model_type=model_config.model_type)],
+            outputs=[piper_policy.PiperOutputs()],
+        )
+        if self.extra_delta_transform:
+            delta_action_mask = _transforms.make_bool_mask(6, -1)
+            data_transforms = data_transforms.push(
+                inputs=[_transforms.DeltaActions(delta_action_mask)],
+                outputs=[_transforms.AbsoluteActions(delta_action_mask)],
+            )
+
+        # Model transforms include things like tokenizing the prompt and action targets
+        # You do not need to change anything here for your own dataset.
+        model_transforms = ModelTransformFactory()(model_config)
+
+        # We return all data transforms for training and inference. No need to change anything here.
+        return dataclasses.replace(
+            self.create_base_config(assets_dirs, model_config),
+            repack_transforms=repack_transform,
+            data_transforms=data_transforms,
+            model_transforms=model_transforms,
+        )
+
+
 
 @dataclasses.dataclass(frozen=True)
 class RLDSDroidDataConfig(DataConfigFactory):
@@ -942,10 +983,12 @@ _CONFIGS = [
         name="pi05_xfg",
         model=pi0_config.Pi0Config(pi05=True, action_horizon=10, discrete_state_input=False),
         data=LeRobotPiperV21DataConfig(
-            repo_id="piper_table_20251210_0850",
+            repo_id="/home/xfg/vla_space/vladata_ws/data_record/piper_table_20251210_0850",  # or "xfg/piper_table_20251210_0850" if in HF cache
             base_config=DataConfig(prompt_from_task=True),
+            extra_delta_transform=True,
         ),
     ),
+
     #
     # ALOHA Sim configs. This config is used to demonstrate how to train on a simple simulated environment.
     #
