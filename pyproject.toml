@@ -66,8 +66,7 @@ rlds = [
 
 [tool.uv]
 override-dependencies = ["ml-dtypes==0.4.1", "tensorstore==0.1.74"]
-index-url = "https://download.pytorch.org/whl/nightly/cu128"
-extra-index-url = ["https://pypi.tuna.tsinghua.edu.cn/simple"]
+index-url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 
 [tool.uv.sources]
 openpi-client = { workspace = true }
