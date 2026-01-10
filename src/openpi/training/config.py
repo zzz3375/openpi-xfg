@@ -982,8 +982,9 @@ _CONFIGS = [
     TrainConfig(
         name="pi05_xfg",
         model=pi0_config.Pi0Config(pi05=True, action_horizon=10, discrete_state_input=False),
-        data=LeRobotPiperV21DataConfig(
-            repo_id="/home/xfg/vla_space/vladata_ws/data_record/piper_table_20251210_0850",  # or "xfg/piper_table_20251210_0850" if in HF cache
+        data=LeRobotLiberoDataConfig(
+            # repo_id="/home/xfg/vla_space/vladata_ws/data_record/piper_table_20251210_0850",  
+            repo_id = "/home/xfg/vla_space/vladata_ws/data_record/piper_table_20260109_0941",
             base_config=DataConfig(prompt_from_task=True),
             extra_delta_transform=True,
         ),
