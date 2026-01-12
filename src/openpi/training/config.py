@@ -388,19 +388,19 @@ class LeRobotPiperV21DataConfig(DataConfigFactory):
         repack_transform = _transforms.Group(inputs=[_transforms.RepackTransform(repack_mapping)])
 
         input_transforms: list[_transforms.DataTransformFn] = []
-        if self.inject_dummy_images:
-            height, width, channels = self.dummy_image_shape
-            input_transforms.append(
-                _transforms.InjectMissingObservationImages(height=height, width=width, channels=channels)
-            )
+        # if self.inject_dummy_images:
+        #     height, width, channels = self.dummy_image_shape
+        #     input_transforms.append(
+        #         _transforms.InjectMissingObservationImages(height=height, width=width, channels=channels)
+        #     )
         input_transforms.append(piper_policy.PiperInputs(model_type=model_config.model_type))
         data_transforms = _transforms.Group(inputs=input_transforms, outputs=[piper_policy.PiperOutputs()])
-        if self.extra_delta_transform:
-            delta_action_mask = _transforms.make_bool_mask(6, -1)
-            data_transforms = data_transforms.push(
-                inputs=[_transforms.DeltaActions(delta_action_mask)],
-                outputs=[_transforms.AbsoluteActions(delta_action_mask)],
-            )
+        # if self.extra_delta_transform:
+        #     delta_action_mask = _transforms.make_bool_mask(6, -1)
+        #     data_transforms = data_transforms.push(
+        #         inputs=[_transforms.DeltaActions(delta_action_mask)],
+        #         outputs=[_transforms.AbsoluteActions(delta_action_mask)],
+        #     )
 
         # Model transforms include things like tokenizing the prompt and action targets
         # You do not need to change anything here for your own dataset.
@@ -956,17 +956,30 @@ _CONFIGS = [
     ),
     TrainConfig(
         name="pi05_xfg",
+        wandb_enabled = False,
         model=pi0_config.Pi0Config(pi05=True, action_horizon=10, discrete_state_input=False),
         data=LeRobotPiperV21DataConfig(
             repo_id = "/home/xfg/vla_space/vladata_ws/data_record/piper_table_20251210_0850",
             base_config=DataConfig(prompt_from_task=True),
-            extra_delta_transform=True,
             action_key="action",
             image_key="observation.images.exterior_1",
             wrist_image_key="observation.images.wrist",
             prompt_key="prompt",
-            inject_dummy_images=False,
         ),
+        weight_loader=weight_loaders.CheckpointWeightLoader("gs://openpi-assets/checkpoints/pi05_base/params"),
+        lr_schedule=_optimizer.CosineDecaySchedule(
+            warmup_steps=1_000,
+            peak_lr=5e-5,
+            decay_steps=1_000_000,
+            decay_lr=5e-5,
+        ),
+        num_train_steps=100_000,
+        batch_size=256,
+        log_interval=100,
+        save_interval=5000,
+        keep_period=10_000,
+        num_workers=0,
+        freeze_filter=pi0_config.Pi0Config(pi05=True, action_horizon=10, discrete_state_input=False).get_freeze_filter()
     ),
 
     #
