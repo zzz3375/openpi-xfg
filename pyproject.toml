@@ -6,7 +6,8 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "LICENSE" }
 dependencies = [
-    "datasets==3.2.0",
+    "torchcodec < 0.6",
+    "datasets==4.4.0",
     "pyarrow",
     "tensorflow_datasets",
     "protobuf==3.20.3",

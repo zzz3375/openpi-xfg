@@ -681,13 +681,13 @@ wheels = [
 
 [[package]]
 name = "datasets"
-version = "3.2.0"
+version = "4.4.0"
 source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
 dependencies = [
-    { name = "aiohttp" },
     { name = "dill" },
     { name = "filelock" },
     { name = "fsspec", extra = ["http"] },
+    { name = "httpx" },
     { name = "huggingface-hub" },
     { name = "multiprocess" },
     { name = "numpy" },
@@ -699,9 +699,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "xxhash" },
 ]
-sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/fc/48/744286c044e2b942d4fa67f92816126522ad1f0675def0ea3264e6242005/datasets-3.2.0.tar.gz", hash = "sha256:9a6e1a356052866b5dbdd9c9eedb000bf3fc43d986e3584d9b028f4976937229", size = 558366, upload-time = "2024-12-10T16:56:38.162Z" }
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/57/13/f05a80bbbac5f62e492e5e463ec59a4479647ef9c376b1fdfaa4d3ed01cc/datasets-4.4.0.tar.gz", hash = "sha256:0430d39b9f13b53c37afb80c23c7e5d8c6ceccc014c14a14d15fa2b4e8688d2a", size = 585143, upload-time = "2025-11-04T10:36:22.73Z" }
 wheels = [
-    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/d7/84/0df6c5981f5fc722381662ff8cfbdf8aad64bec875f75d80b55bfef394ce/datasets-3.2.0-py3-none-any.whl", hash = "sha256:f3d2ba2698b7284a4518019658596a6a8bc79f31e51516524249d6c59cf0fe2a", size = 480647, upload-time = "2024-12-10T16:56:34.742Z" },
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/1e/31/d552336985f747b19f0a852d98ca7a2ef4727ba956b38041cfbda08dde0a/datasets-4.4.0-py3-none-any.whl", hash = "sha256:b7e6d1d48c2e1d3a95d6b378e8fc3d7ab29f24f14ddf505a8d417dd09c692f19", size = 511463, upload-time = "2025-11-04T10:36:20.062Z" },
 ]
 
 [[package]]
@@ -3235,6 +3235,7 @@ dependencies = [
     { name = "sentencepiece" },
     { name = "tensorflow-datasets" },
     { name = "torch" },
+    { name = "torchcodec" },
     { name = "tqdm-loggable" },
     { name = "transformers" },
     { name = "treescope" },
@@ -3263,7 +3264,7 @@ rlds = [
 requires-dist = [
     { name = "augmax", specifier = ">=0.3.4" },
     { name = "beartype", specifier = "==0.19.0" },
-    { name = "datasets", specifier = "==3.2.0" },
+    { name = "datasets", specifier = "==4.4.0" },
     { name = "dm-tree", specifier = ">=0.1.8" },
     { name = "einops", specifier = ">=0.8.0" },
     { name = "equinox", specifier = ">=0.11.8" },
@@ -3290,6 +3291,7 @@ requires-dist = [
     { name = "sentencepiece", specifier = ">=0.2.0" },
     { name = "tensorflow-datasets" },
     { name = "torch", specifier = "==2.7.1" },
+    { name = "torchcodec", specifier = "<0.6" },
     { name = "tqdm-loggable", specifier = ">=0.2" },
     { name = "transformers", specifier = "==4.53.2" },
     { name = "treescope", specifier = ">=0.1.7" },
@@ -5182,17 +5184,15 @@ wheels = [
 
 [[package]]
 name = "torchcodec"
-version = "0.9.1"
+version = "0.5"
 source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
 wheels = [
-    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/c0/37/169238bb55017b08a93530d6f4474a112780df4c05c26c78df7dd58401f1/torchcodec-0.9.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:7a81d29e67cebefaec08f9c817635d1ff47205814884e527ef4b135a6c795612", size = 3899002, upload-time = "2025-12-10T15:55:49.911Z" },
-    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/75/74/11c59e0592e555df78cfee2fd4b8ba5c725e4bf160002af88ce09de99d9d/torchcodec-0.9.1-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:5e959c7abf95de62f78653d416f00f7ca32936fbfd23371b23d5c8dc199f3670", size = 2048262, upload-time = "2025-12-10T15:55:29.552Z" },
-    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/4b/60/3bfa459e09987af08e188811b191437c9d8215a74f4d418be6ff7df87b5c/torchcodec-0.9.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:8996ec62b72c69545c30246df64df386d06d7ec7de0689be5d20dfc06aad6442", size = 4064264, upload-time = "2025-12-10T15:55:56.313Z" },
-    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/17/c8/bfb74babec98aff11ab4f239b0901f39e1a93338b3438e842d864dc46935/torchcodec-0.9.1-cp312-cp312-manylinux_2_28_x86_64.whl", hash = "sha256:a50568ce73b70395d113833fb07394c223f5546ef5d4fafe0fdcd91627fca270", size = 2061978, upload-time = "2025-12-10T15:55:33.415Z" },
-    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/6f/c7/67fc8417f9efa8a25c00a44f0d674761a0bad9c45e9725e3fd116b3c48ed/torchcodec-0.9.1-cp313-cp313-macosx_12_0_arm64.whl", hash = "sha256:5c9cdcba50c75be70ef6ec919ec1f7f14d9d5163d93cf6bd94403e134f03734c", size = 4034415, upload-time = "2025-12-10T15:56:02.04Z" },
-    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/68/05/06240f661e9aa08b20765305e3b88f60bff706bbe54ac35830af74612443/torchcodec-0.9.1-cp313-cp313-manylinux_2_28_x86_64.whl", hash = "sha256:0643c5e9c3a51fdafdea87935d5b0a38e99626c664f47a150482d77ab370a877", size = 2067767, upload-time = "2025-12-10T15:55:37.27Z" },
-    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/01/02/f8ae9443d3bcbe8a8d6d0bbc3992296e5476e5afa1f244100a3a7967a36c/torchcodec-0.9.1-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:b9bc5a5dff925df96d11bf90bd0ce964b8086bb11ae09adf353518192b5da483", size = 3812248, upload-time = "2025-12-10T15:56:06.382Z" },
-    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/59/a1/8462b55571286847ea31edb7634583125400824267db9ba8301f4ce3f137/torchcodec-0.9.1-cp314-cp314-manylinux_2_28_x86_64.whl", hash = "sha256:65634bb28b3155cf99f980dac31ecedb414c07b8156f8473ec9fb74bedbd2a1f", size = 2068456, upload-time = "2025-12-10T15:55:40.577Z" },
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/84/9f/8e0ae96b2560050eb1a8780dabbe3d192cf99e62a5ce2a128684bfd6f5d6/torchcodec-0.5-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:d582981f251979d4432a1606d2bfbc8d56b98a701957afbaf4cafe7569b19c68", size = 3307718, upload-time = "2025-07-23T17:43:52.805Z" },
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/d3/a1/cc2b7f72104cbb5f60f5f277f470e9d0172bffb354f74b0e13a02a241165/torchcodec-0.5-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:00252c2a138c655851cc7aa6e7ad6455c6513c9b2f93cec74563cba83196be8a", size = 1374385, upload-time = "2025-07-23T17:42:43.219Z" },
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/02/52/23145c2a6580f0753104f257067db0cf68e1ba105408777ec54ce686c1f0/torchcodec-0.5-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:221c1123eefe31d57a41fe85b020306f685b6823dc70c3f4648215038fbae52c", size = 3493067, upload-time = "2025-07-23T17:43:54.519Z" },
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/65/38/dfe8aa3a71c4eb0fd930d0c6db661cc65d1f220b2225433207ceb15733c4/torchcodec-0.5-cp312-cp312-manylinux_2_28_x86_64.whl", hash = "sha256:310dfbfd7c56e283e0a9bd7cb4b5815cf1251a7bdeb93991b14311a1d144137d", size = 1370294, upload-time = "2025-07-23T17:42:44.455Z" },
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/33/c0/a7ea6135890aa93c7491aa8d5622a77c6de587ddef237f75e3490e98c3c2/torchcodec-0.5-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:7f75fb5eb9a59fb3ce690ec7f4eed12e9c639827ec46ffdd16d0aabaece82ab8", size = 3456530, upload-time = "2025-07-23T17:43:55.788Z" },
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/71/e8/11be3eca1b545af1773277540eeafc5fd5a2b76433063756d6e61ea8bf8d/torchcodec-0.5-cp313-cp313-manylinux_2_28_x86_64.whl", hash = "sha256:b9f41237de1b5960e85d3326a345deed86aa1b43d9cf17eac054255758dd41aa", size = 1375368, upload-time = "2025-07-23T17:42:45.619Z" },
 ]
 
 [[package]]
