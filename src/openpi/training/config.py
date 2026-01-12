@@ -333,6 +333,7 @@ class LeRobotLiberoDataConfig(DataConfigFactory):
     """
 
     extra_delta_transform: bool = False
+    action_key: str = "actions"
 
     @override
     def create(self, assets_dirs: pathlib.Path, model_config: _model.BaseModelConfig) -> DataConfig:
@@ -351,7 +352,7 @@ class LeRobotLiberoDataConfig(DataConfigFactory):
                         "observation/image": "image",
                         "observation/wrist_image": "wrist_image",
                         "observation/state": "state",
-                        "actions": "actions",
+                        "actions": self.action_key,
                         "prompt": "prompt",
                     }
                 )
@@ -398,6 +399,7 @@ class LeRobotLiberoDataConfig(DataConfigFactory):
             repack_transforms=repack_transform,
             data_transforms=data_transforms,
             model_transforms=model_transforms,
+            action_sequence_keys=(self.action_key,),
         )
 
 import openpi.policies.piper_policy as piper_policy
@@ -983,10 +985,10 @@ _CONFIGS = [
         name="pi05_xfg",
         model=pi0_config.Pi0Config(pi05=True, action_horizon=10, discrete_state_input=False),
         data=LeRobotLiberoDataConfig(
-            # repo_id="/home/xfg/vla_space/vladata_ws/data_record/piper_table_20251210_0850",  
-            repo_id = "/home/xfg/vla_space/vladata_ws/data_record/piper_table_20260109_0941",
+            repo_id = "/home/xfg/vla_space/vladata_ws/data_record/piper_table_20260112_0144",
             base_config=DataConfig(prompt_from_task=True),
             extra_delta_transform=True,
+            action_key="action"
         ),
     ),
 
