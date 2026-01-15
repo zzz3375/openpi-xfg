@@ -976,7 +976,7 @@ _CONFIGS = [
         num_train_steps=100_000,
         batch_size=1,
         log_interval=100,
-        save_interval=5000,
+        save_interval=20_000,
         keep_period=10_000,
         num_workers=0,
         freeze_filter=pi0_config.Pi0Config(pi05=True, action_horizon=10, discrete_state_input=False).get_freeze_filter()
@@ -1003,7 +1003,7 @@ _CONFIGS = [
         num_train_steps=100_000,
         batch_size=1,
         log_interval=100,
-        save_interval=5000,
+        save_interval=20_000,
         keep_period=10_000,
         num_workers=0,
         freeze_filter=pi0_config.Pi0Config(pi05=True, action_horizon=10, discrete_state_input=False).get_freeze_filter()
