@@ -5,9 +5,8 @@ sudo apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     build-essential \
     wget \
-    ffmpeg \
     libavutil-dev \
     openssh-server 
-
+conda install ffmpeg
 GIT_LFS_SKIP_SMUDGE=1 uv sync
 GIT_LFS_SKIP_SMUDGE=1 uv pip install -e .
