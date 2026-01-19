@@ -1,7 +1,0 @@
-revise the docker file, main working dir is still /working/
-map (my computer) /home/xfg/openpi to (container) /working/openpi, not git clone
-map (my computer) /home/xfg/vla_space/vladata_ws/data_record//home/xfg/vla_space/vladata_ws/data_record/piper_table_20251210_0850
-    to (container) /working/data_record/piper_table_20251210_0850
-export HF_LEROBOT_HOME=/working/data_record/ better add to .bashrc or globally in every bash
-
-
