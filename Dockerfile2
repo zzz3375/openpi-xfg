@@ -1,0 +1,40 @@
+FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    ca-certificates \
+    build-essential \
+    clang \
+    wget \
+    ffmpeg \
+    libavutil-dev \
+    openssh-server \
+    g++-11 \
+    libnsl-dev \
+    libstdc++-11-dev \
+    libtirpc-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.cargo/bin:/root/.local/bin:$PATH"
+
+WORKDIR /workspace/openpi
+COPY . .
+
+RUN uv python install 3.11.14
+ENV UV_PYTHON=3.11.14
+
+RUN GIT_LFS_SKIP_SMUDGE=1 uv sync
+RUN GIT_LFS_SKIP_SMUDGE=1 uv pip install -e .
+
+ENV OPENPI_DATA_HOME=/workspace/openpi/.openpi_cache
+RUN mkdir -p $OPENPI_DATA_HOME
+
+EXPOSE 8000
+
+CMD ["bash"]

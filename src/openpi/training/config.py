@@ -371,15 +371,17 @@ class LeRobotPiperV21DataConfig(DataConfigFactory):
     wrist_image_key: str | None = "observation.images.wrist"
     prompt_key: str = "prompt"
     inject_dummy_images: bool = False
-    dummy_image_shape: tuple[int, int, int] = (224, 224, 3)
+    # dummy_image_shape: tuple[int, int, int] = (224, 224, 3)
     action_sequence_keys: Sequence[str] = ("action",)
     @override
     def create(self, assets_dirs: pathlib.Path, model_config: _model.BaseModelConfig) -> DataConfig:
+        
         repack_mapping: dict[str, str] = {
             "observation/state": "observation.state",
             "actions": self.action_key,
             "prompt": self.prompt_key,
         }
+        
         if self.image_key is not None:
             repack_mapping["observation/image"] = self.image_key
         if self.wrist_image_key is not None:
@@ -954,64 +956,10 @@ _CONFIGS = [
         keep_period=10_000,
         num_workers=0,  # Important: RLDS DataLoader requires num_workers=0, handles multi-processing internally
     ),
-    TrainConfig(
-        name="pi05_xfg",
-        wandb_enabled = False,
-        model=pi0_config.Pi0Config(pi05=True, action_horizon=10, discrete_state_input=False),
-        data=LeRobotPiperV21DataConfig(
-            repo_id = "/home/xfg/vla_space/vladata_ws/data_record/piper_table_20251210_0850",
-            base_config=DataConfig(prompt_from_task=True),
-            action_key="action",
-            image_key="observation.images.exterior_1",
-            wrist_image_key="observation.images.wrist",
-            prompt_key="prompt",
-        ),
-        weight_loader=weight_loaders.CheckpointWeightLoader("gs://openpi-assets/checkpoints/pi05_base/params"),
-        lr_schedule=_optimizer.CosineDecaySchedule(
-            warmup_steps=1_000,
-            peak_lr=5e-5,
-            decay_steps=1_000_000,
-            decay_lr=5e-5,
-        ),
-        num_train_steps=100_000,
-        batch_size=1,
-        log_interval=100,
-        save_interval=20_000,
-        keep_period=10_000,
-        num_workers=0,
-        freeze_filter=pi0_config.Pi0Config(pi05=True, action_horizon=10, discrete_state_input=False).get_freeze_filter()
-    ),
-    TrainConfig(
-        name="pi05_xfg_docker",
-        wandb_enabled = False,
-        model=pi0_config.Pi0Config(pi05=True, action_horizon=10, discrete_state_input=False),
-        data=LeRobotPiperV21DataConfig(
-            repo_id = "/working/data_record/piper_table_20251210_0850",
-            base_config=DataConfig(prompt_from_task=True),
-            action_key="action",
-            image_key="observation.images.exterior_1",
-            wrist_image_key="observation.images.wrist",
-            prompt_key="prompt",
-        ),
-        weight_loader=weight_loaders.CheckpointWeightLoader("gs://openpi-assets/checkpoints/pi05_base/params"),
-        lr_schedule=_optimizer.CosineDecaySchedule(
-            warmup_steps=1_000,
-            peak_lr=5e-5,
-            decay_steps=1_000_000,
-            decay_lr=5e-5,
-        ),
-        num_train_steps=100_000,
-        batch_size=1,
-        log_interval=100,
-        save_interval=20_000,
-        keep_period=10_000,
-        num_workers=0,
-        freeze_filter=pi0_config.Pi0Config(pi05=True, action_horizon=10, discrete_state_input=False).get_freeze_filter()
-    ),
- TrainConfig(
+     TrainConfig(
         name="pi05_xfg_full",
         wandb_enabled = False,
-        model=pi0_config.Pi0Config(pi05=True, action_horizon=10, discrete_state_input=False),
+        model=pi0_config.Pi0Config(pi05=True, action_horizon=16, action_dim=7, discrete_state_input=True),
         data=LeRobotPiperV21DataConfig(
             repo_id = "/root/private_data/robot_ws/data_record/piper_table_20251210_0850",
             base_config=DataConfig(prompt_from_task=True),
@@ -1020,15 +968,15 @@ _CONFIGS = [
             wrist_image_key="observation.images.wrist",
             prompt_key="prompt",
         ),
-        weight_loader=weight_loaders.CheckpointWeightLoader("gs://openpi-assets/checkpoints/pi05_base/params"),
+        weight_loader=weight_loaders.NoOpWeightLoader(),
         lr_schedule=_optimizer.CosineDecaySchedule(
             warmup_steps=1_000,
             peak_lr=5e-5,
-            decay_steps=1_000_000,
+            decay_steps=20_000,
             decay_lr=5e-5,
         ),
-        num_train_steps=200_000,
-        batch_size=1,
+        num_train_steps=100_000,
+        batch_size=8,
         log_interval=100,
         save_interval=20_000,
         keep_period=10_000,

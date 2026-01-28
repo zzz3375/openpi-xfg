@@ -191,21 +191,6 @@ class ResizeImages(DataTransformFn):
         return data
 
 
-@dataclasses.dataclass(frozen=True)
-class InjectMissingObservationImages(DataTransformFn):
-    height: int = 224
-    width: int = 224
-    channels: int = 3
-
-    def __call__(self, data: DataDict) -> DataDict:
-        if "observation/image" not in data:
-            data["observation/image"] = np.zeros((self.height, self.width, self.channels), dtype=np.uint8)
-            print("image not found")
-        if "observation/wrist_image" not in data:
-            data["observation/wrist_image"] = np.zeros((self.height, self.width, self.channels), dtype=np.uint8)
-            print("wrist image not found")
-        return data
-
 
 @dataclasses.dataclass(frozen=True)
 class SubsampleActions(DataTransformFn):
