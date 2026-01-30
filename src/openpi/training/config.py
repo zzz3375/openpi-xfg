@@ -967,8 +967,8 @@ _CONFIGS = [
             discrete_state_input=True,
         ),
         data=LeRobotPiperV21DataConfig(
-            # repo_id = "/root/private_data/robot_ws/data_record/piper_table_20251210_0850",
-            repo_id = "/home/xfg/vla_space/vladata_ws/data_record/piper_table_20260130_0458",    
+            repo_id = "/root/private_data/robot_ws/data_record/piper_table_20260130_0458",
+            # repo_id = "/home/xfg/vla_space/vladata_ws/data_record/piper_table_20260130_0458",    
             base_config=DataConfig(prompt_from_task=True),
             action_key="action",
             image_key="observation.images.exterior_1",
@@ -980,8 +980,8 @@ _CONFIGS = [
         lr_schedule=_optimizer.CosineDecaySchedule(
             warmup_steps=1_000,
             peak_lr=5e-5,
-            decay_steps=150_000,
-            decay_lr=5e-5,
+            decay_steps=120_000,
+            decay_lr=5e-6,
         ),
         num_train_steps=200_000,
         batch_size=8,
