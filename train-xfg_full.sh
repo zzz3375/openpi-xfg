@@ -1,2 +1,2 @@
-export OPENPI_DATA_HOME=/root/private_data/robot_ws/openpi_cache
+# export OPENPI_DATA_HOME=/root/private_data/robot_ws/openpi_cache
 XLA_PYTHON_CLIENT_MEM_FRACTION=0.9 uv run scripts/train.py pi05_xfg_full --exp-name=pi05_xfg_full --overwrite

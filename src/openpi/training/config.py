@@ -21,6 +21,7 @@ import openpi.policies.aloha_policy as aloha_policy
 import openpi.policies.droid_policy as droid_policy
 import openpi.policies.libero_policy as libero_policy
 import openpi.shared.download as _download
+import openpi.shared.nnx_utils as nnx_utils
 import openpi.shared.normalize as _normalize
 import openpi.training.droid_rlds_dataset as droid_rlds_dataset
 import openpi.training.misc.polaris_config as polaris_config
@@ -956,31 +957,44 @@ _CONFIGS = [
         keep_period=10_000,
         num_workers=0,  # Important: RLDS DataLoader requires num_workers=0, handles multi-processing internally
     ),
-     TrainConfig(
+    TrainConfig(
         name="pi05_xfg_full",
         wandb_enabled = False,
-        model=pi0_config.Pi0Config(pi05=True, action_horizon=16, action_dim=7, discrete_state_input=True),
+        model=pi0_config.Pi0Config(
+            pi05=True,
+            action_dim=7,
+            action_horizon=16,
+            discrete_state_input=True,
+        ),
         data=LeRobotPiperV21DataConfig(
-            repo_id = "/root/private_data/robot_ws/data_record/piper_table_20251210_0850",
+            # repo_id = "/root/private_data/robot_ws/data_record/piper_table_20251210_0850",
+            repo_id = "/home/xfg/vla_space/vladata_ws/data_record/piper_table_20260130_0458",    
             base_config=DataConfig(prompt_from_task=True),
             action_key="action",
             image_key="observation.images.exterior_1",
             wrist_image_key="observation.images.wrist",
             prompt_key="prompt",
         ),
-        weight_loader=weight_loaders.NoOpWeightLoader(),
+        # weight_loader=weight_loaders.NoOpWeightLoader(),
+        weight_loader=weight_loaders.CheckpointWeightLoader("gs://openpi-assets/checkpoints/pi05_base/params"),
         lr_schedule=_optimizer.CosineDecaySchedule(
             warmup_steps=1_000,
             peak_lr=5e-5,
-            decay_steps=20_000,
+            decay_steps=150_000,
             decay_lr=5e-5,
         ),
-        num_train_steps=100_000,
+        num_train_steps=200_000,
         batch_size=8,
         log_interval=100,
-        save_interval=20_000,
+        save_interval=40_000,
         keep_period=10_000,
         num_workers=0,
+        freeze_filter=nnx.Not(
+            nnx_utils.PathRegex(
+                ".*(action_in_proj|action_out_proj|time_mlp_in|time_mlp_out).*",
+                ".*(llm.*_1|action_in_proj|action_out_proj|time_mlp_in|time_mlp_out).*",
+            )
+        )
     ),
     #
     # ALOHA Sim configs. This config is used to demonstrate how to train on a simple simulated environment.

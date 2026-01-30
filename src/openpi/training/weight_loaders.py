@@ -89,15 +89,25 @@ def _merge_params(loaded_params: at.Params, params: at.Params, *, missing_regex:
 
     # First, take all weights that are a subset of the reference weights.
     result = {}
+    shape_mismatch_keys: set[str] = set()
     for k, v in flat_loaded.items():
         if k in flat_ref:
+            if getattr(v, "shape", None) != getattr(flat_ref[k], "shape", None):
+                logger.warning(
+                    "Skipping param with shape mismatch for %s: checkpoint %s vs model %s",
+                    k,
+                    getattr(v, "shape", None),
+                    getattr(flat_ref[k], "shape", None),
+                )
+                shape_mismatch_keys.add(k)
+                continue
             result[k] = v.astype(flat_ref[k].dtype) if v.dtype != flat_ref[k].dtype else v
 
     flat_loaded.clear()
 
-    # Then, merge any missing weights as defined by the missing regex.
+    # Then, merge any missing weights as defined by the missing regex or skipped due to shape mismatch.
     pattern = re.compile(missing_regex)
-    for k in {k for k in flat_ref if pattern.fullmatch(k)}:
+    for k in {k for k in flat_ref if pattern.fullmatch(k)} | shape_mismatch_keys:
         if k not in result:
             result[k] = flat_ref[k]
 
