@@ -984,16 +984,13 @@ _CONFIGS = [
             decay_lr=5e-6,
         ),
         num_train_steps=200_000,
-        batch_size=8,
+        batch_size=16,
         log_interval=100,
-        save_interval=40_000,
+        save_interval=60_000,
         keep_period=10_000,
         num_workers=0,
         freeze_filter=nnx.Not(
-            nnx_utils.PathRegex(
-                ".*(action_in_proj|action_out_proj|time_mlp_in|time_mlp_out).*",
-                ".*(llm.*_1|action_in_proj|action_out_proj|time_mlp_in|time_mlp_out).*",
-            )
+            nnx_utils.PathRegex(".*(llm.*_1|action_in_proj|action_out_proj|time_mlp_in|time_mlp_out).*")
         )
     ),
     #
