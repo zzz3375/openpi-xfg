@@ -1,2 +1,2 @@
 # export OPENPI_DATA_HOME=/root/private_data/robot_ws/openpi_cache
-XLA_PYTHON_CLIENT_MEM_FRACTION=0.9 uv run scripts/train.py pi0_libero_low_mem_finetune --exp-name=pi0_libero_low_mem_finetune --overwrite
+XLA_PYTHON_CLIENT_MEM_FRACTION=0.9 HF_ENDPOINT=https://hf-mirror.com uv run scripts/train.py pi0_libero_low_mem_finetune --exp-name=pi0_libero_low_mem_finetune --overwrite
