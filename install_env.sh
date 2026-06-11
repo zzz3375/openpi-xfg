@@ -12,5 +12,5 @@ sudo apt install -y --no-install-recommends \
 conda install -c conda-forge ffmpeg gcc=12 -y
 pip install uv
 
-GIT_LFS_SKIP_SMUDGE=1 uv sync
+GIT_LFS_SKIP_SMUDGE=1 CC=/usr/bin/cc uv sync
 GIT_LFS_SKIP_SMUDGE=1 uv pip install -e .
