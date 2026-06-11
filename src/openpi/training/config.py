@@ -959,7 +959,7 @@ _CONFIGS = [
     ),
     TrainConfig(
         name="pi05_xfg_full",
-        wandb_enabled = False,
+        wandb_enabled = True,
         model=pi0_config.Pi0Config(
             pi05=True,
             action_dim=7,

@@ -8,6 +8,7 @@ sudo apt install -y --no-install-recommends \
     wget \
     libavutil-dev \
     openssh-server g++-11 libnsl-dev libstdc++-11-dev libtirpc-dev
+
 conda install -c conda-forge ffmpeg gcc=12 -y
 pip install uv
 
