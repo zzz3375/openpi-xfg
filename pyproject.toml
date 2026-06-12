@@ -83,8 +83,8 @@ torch = { index = "pytorch-cu124" }
 torchvision = { index = "pytorch-cu124" }
 
 # 其他 Git/workspace 依赖
-lerobot = { git = "https://gitee.com/zzz3375/lerobot.git", rev = "xfg/my-bug-fix" }
-dlimp = { git = "https://gitee.com/ruan-shouguo/dlimp.git", rev = "ad72ce3a9b414db2185bc0b38461d4101a65477a" }
+lerobot = { git = "https://github.com/zzz3375/lerobot.git", rev = "xfg/my-bug-fix" }
+dlimp = { git = "https://github.com/kvablack/dlimp.git", rev = "ad72ce3a9b414db2185bc0b38461d4101a65477a" }
 openpi-client = { workspace = true }
 
 [tool.uv.workspace]
