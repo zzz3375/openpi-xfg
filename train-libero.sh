@@ -21,6 +21,11 @@ mkdir -p "$OPENPI_DATA_HOME" "$HF_HUB_CACHE" "$HF_DATASETS_CACHE" "$HF_LEROBOT_H
 # ── 清理残留 lock ──
 find "$HF_DATASETS_CACHE" -name "*.lock" -delete 2>/dev/null || true
 
+# ── 拉取 lerobot fork 最新 commit ──
+echo "=== Upgrading lerobot to latest commit ==="
+uv lock --upgrade-package lerobot
+uv sync --no-install-project
+
 CONFIG="pi0_libero_low_mem_finetune"
 EXP_NAME="pi0_libero_low_mem_finetune"
 
