@@ -10,15 +10,6 @@ import jax.numpy as jnp
 import numpy as np
 import torch
 
-# Apply LeRobot monkey-patch for fast timestamp extraction (fixes WSL2 DrvFs hang).
-# Must be imported before lerobot_dataset is used.
-import sys as _sys
-_project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-if _project_root not in _sys.path:
-    _sys.path.insert(0, _project_root)
-import scripts.patch_lerobot_slow_init as _patch_lerobot  # noqa: E402
-_patch_lerobot.apply_patch()
-
 import lerobot.common.datasets.lerobot_dataset as lerobot_dataset
 
 import openpi.models.model as _model
