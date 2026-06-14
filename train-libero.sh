@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ── 选择数据存放盘符：C 盘或 D 盘 ──
+# ── 自动选择数据存放盘符：优先 D 盘，否则使用 C 盘 ──
 # 用法：
-#   DATA_DRIVE=d bash train-libero.sh    # D 盘 (推荐，WSL2 避免 vhdx I/O)
-#   DATA_DRIVE=c bash train-libero.sh    # C 盘
-#   bash train-libero.sh                 # 默认 C 盘
-DATA_DRIVE="${DATA_DRIVE:-c}"
+#   bash train-libero.sh                 # D 盘存在则用 D，否则用 C
+if [ -d /mnt/d ]; then
+    DATA_DRIVE="d"
+else
+    DATA_DRIVE="c"
+fi
 DATA_ROOT="/mnt/${DATA_DRIVE}/Users/13694"
 
 export OPENPI_DATA_HOME="$DATA_ROOT/openpi"
