@@ -4,29 +4,19 @@ set -euo pipefail
 # ── 自动选择数据存放盘符：优先 D 盘，否则使用 C 盘 ──
 # 用法：
 #   bash train-libero.sh                 # D 盘存在则用 D，否则用 C
-if [ -d /mnt/d ]; then
+if mountpoint -q /mnt/d 2>/dev/null; then
     DATA_DRIVE="d"
 else
     DATA_DRIVE="c"
 fi
 DATA_ROOT="/mnt/${DATA_DRIVE}/Users/13694"
 
-export OPENPI_DATA_HOME="$DATA_ROOT/openpi"
-export HF_HOME="$DATA_ROOT/huggingface"
-export HF_HUB_CACHE="$HF_HOME/hub"
-export HF_DATASETS_CACHE="$HF_HOME/datasets"
-export HF_LEROBOT_HOME="$HF_HOME/lerobot"
-export TMPDIR="$DATA_ROOT/tmp"
+export OPENPI_DATA_HOME="$DATA_ROOT/openpi_data_home"
+export HF_HOME="$DATA_ROOT/hf_home"
 
-mkdir -p "$OPENPI_DATA_HOME" "$HF_HUB_CACHE" "$HF_DATASETS_CACHE" "$HF_LEROBOT_HOME" "$TMPDIR"
+# export HTTP_PROXY=http://127.0.0.1:7890
+# export HTTPS_PROXY=https://127.0.0.1:7890
 
-# ── 清理残留 lock ──
-find "$HF_DATASETS_CACHE" -name "*.lock" -delete 2>/dev/null || true
-
-# ── 拉取 lerobot fork 最新 commit ──
-echo "=== Upgrading lerobot to latest commit ==="
-uv lock --upgrade-package lerobot
-uv sync --no-install-project
 
 CONFIG="pi0_libero_low_mem_finetune"
 EXP_NAME="pi0_libero_low_mem_finetune"
