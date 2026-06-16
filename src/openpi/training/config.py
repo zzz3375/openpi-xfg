@@ -967,7 +967,7 @@ _CONFIGS = [
             discrete_state_input=True,
         ),
         data=LeRobotPiperV21DataConfig(
-            repo_id = "/root/private_data/robot_ws/data_record/piper_table_20260130_0458",
+            repo_id = "/root/private_data/robot_ws/data_record/data_record_202606/piper_table_20260606_0856_1",
             # repo_id = "/home/xfg/vla_space/vladata_ws/data_record/piper_table_20260130_0458",    
             base_config=DataConfig(prompt_from_task=True),
             action_key="action",
