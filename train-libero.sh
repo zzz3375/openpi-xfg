@@ -27,4 +27,4 @@ EXP_NAME="pi0_libero_low_mem_finetune"
 echo "=== Starting training ==="
 XLA_PYTHON_CLIENT_MEM_FRACTION=0.95 WANDB_MODE=disabled \
     uv run scripts/train.py "$CONFIG" \
-    --exp-name="$EXP_NAME" --overwrite --num-workers=0
+    --exp-name="$EXP_NAME" --resume --num-workers=0

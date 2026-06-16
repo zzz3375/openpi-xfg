@@ -9,7 +9,7 @@ sudo apt install -y --no-install-recommends \
     libavutil-dev \
     openssh-server g++-11 libnsl-dev libstdc++-11-dev libtirpc-dev
 
-conda install -c conda-forge ffmpeg gcc=12 -y
+conda install -c conda-forge ffmpeg==7.1.1 gcc=12 -y
 pip install uv
 
 GIT_LFS_SKIP_SMUDGE=1 CC=/usr/bin/cc uv sync
