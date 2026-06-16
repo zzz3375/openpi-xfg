@@ -965,11 +965,9 @@ _CONFIGS = [
             action_dim=7,
             action_horizon=16,
             discrete_state_input=True,
-            paligemma_variant="gemma_2b_lora",
-            action_expert_variant="gemma_300m_lora",
         ),
         data=LeRobotPiperV21DataConfig(
-            repo_id = "/root/private_data/robot_ws/data_record/data_record_202606/piper_table_20260606_0856_1",
+            repo_id = "/root/private_data/robot_ws/data_record/piper_table_20260130_0458",
             # repo_id = "/home/xfg/vla_space/vladata_ws/data_record/piper_table_20260130_0458",    
             base_config=DataConfig(prompt_from_task=True),
             action_key="action",
@@ -985,16 +983,15 @@ _CONFIGS = [
             decay_steps=120_000,
             decay_lr=5e-6,
         ),
-        num_train_steps=20_000,
-        batch_size=32,
+        num_train_steps=200_000,
+        batch_size=16,
         log_interval=100,
         save_interval=20_000,
         keep_period=20_000,
         num_workers=0,
-        freeze_filter=pi0_config.Pi0Config(
-            pi05=True, paligemma_variant="gemma_2b_lora", action_expert_variant="gemma_300m_lora"
-        ).get_freeze_filter(),
-        ema_decay=None,
+        freeze_filter=nnx.Not(
+            nnx_utils.PathRegex(".*(llm.*_1|action_in_proj|action_out_proj|time_mlp_in|time_mlp_out).*")
+        )
     ),
     #
     # ALOHA Sim configs. This config is used to demonstrate how to train on a simple simulated environment.
