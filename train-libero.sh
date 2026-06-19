@@ -7,10 +7,14 @@ else
     DATA_DRIVE="c"
 fi
 DATA_ROOT="/mnt/${DATA_DRIVE}/Users/13694"
+WIN_TEMP="/mnt/c/Users/13694/AppData/Local/Temp"
 
+# ── 所有缓存和临时文件都映射到 Windows，避免写满 WSL 虚拟磁盘 ──
 export OPENPI_DATA_HOME="$DATA_ROOT/openpi_data_home"
 export HF_HOME="$DATA_ROOT/hf_home"
-
+# JAX/XLA 编译临时文件 → Windows Temp（重启后自动清理）
+export TMPDIR="$WIN_TEMP/openpi_tmp"
+mkdir -p "$TMPDIR"
 
 CONFIG="pi05_libero_low_mem_finetune"
 EXP_NAME="pi05_libero_low_mem_finetune"
@@ -23,4 +27,5 @@ echo "=== Computing normalization stats ==="
 echo "=== Starting training ==="
 XLA_PYTHON_CLIENT_MEM_FRACTION=0.95 WANDB_MODE=disabled \
     uv run scripts/train.py "$CONFIG" \
-    --exp-name="$EXP_NAME" --num-workers=0 --resume #--overwrite 
+    --exp-name="$EXP_NAME" --num-workers=0 --resume \
+    --checkpoint-base-dir "$DATA_ROOT/openpi_checkpoints" #--overwrite 
