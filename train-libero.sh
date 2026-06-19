@@ -23,4 +23,4 @@ echo "=== Computing normalization stats ==="
 echo "=== Starting training ==="
 XLA_PYTHON_CLIENT_MEM_FRACTION=0.95 WANDB_MODE=disabled \
     uv run scripts/train.py "$CONFIG" \
-    --exp-name="$EXP_NAME" --overwrite --num-workers=0
+    --exp-name="$EXP_NAME" --num-workers=0 --resume #--overwrite 
