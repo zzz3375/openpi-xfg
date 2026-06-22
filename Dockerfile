@@ -22,7 +22,7 @@ ENV PATH="/root/.cargo/bin:/root/.local/bin:$PATH"
 WORKDIR /workspace
 
 # Clone repo + submodules (shallow to reduce size, but full if needed)
-RUN git clone --recurse-submodules https://github.com/Physical-Intelligence/openpi.git .
+RUN git clone --recurse-submodules https://github.com/zzz3375/openpi-xfg.git .
 # If you prefer SSH (for private forks), replace with:
 # RUN git clone --recurse-submodules git@github.com:Physical-Intelligence/openpi.git .
 
