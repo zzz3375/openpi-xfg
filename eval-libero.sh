@@ -15,7 +15,7 @@ set -euo pipefail
 # ── 默认值 ──
 USE_DOCKER=false
 TASK_SUITE="libero_spatial"
-NUM_TRIALS=50
+NUM_TRIALS=1
 
 # ── 解析参数 ──
 for arg in "$@"; do
@@ -158,7 +158,7 @@ if $USE_DOCKER; then
         exit 1
     fi
 
-    export CLIENT_ARGS="--args.task-suite-name=$TASK_SUITE --args.num-trials-per-task=$NUM_TRIALS"
+    export CLIENT_ARGS="--args.task-suite-name=$TASK_SUITE --args.num-trials-per-task=$NUM_TRIALS --args.env-resolution=720"
 
     # 首次运行需构建镜像
     if ! docker image inspect libero > /dev/null 2>&1; then

@@ -15,7 +15,7 @@ import tqdm
 import tyro
 
 LIBERO_DUMMY_ACTION = [0.0] * 6 + [-1.0]
-LIBERO_ENV_RESOLUTION = 256  # resolution used to render training data
+LIBERO_ENV_RESOLUTION = 256  # default rendering resolution (override via --args.env-resolution)
 
 
 @dataclasses.dataclass
@@ -25,7 +25,7 @@ class Args:
     #################################################################################################################
     host: str = "0.0.0.0"
     port: int = 8000
-    resize_size: int = 224
+    resize_size: int = 224  # resolution fed to the model (inference)
     replan_steps: int = 5
 
     #################################################################################################################
@@ -34,6 +34,7 @@ class Args:
     task_suite_name: str = (
         "libero_spatial"  # Task suite. Options: libero_spatial, libero_object, libero_goal, libero_10, libero_90
     )
+    env_resolution: int = 256  # MuJoCo rendering resolution (increase for higher-quality video)
     num_steps_wait: int = 10  # Number of steps to wait for objects to stabilize i n sim
     num_trials_per_task: int = 50  # Number of rollouts per task
 
@@ -82,7 +83,7 @@ def eval_libero(args: Args) -> None:
         initial_states = task_suite.get_task_init_states(task_id)
 
         # Initialize LIBERO environment and task description
-        env, task_description = _get_libero_env(task, LIBERO_ENV_RESOLUTION, args.seed)
+        env, task_description = _get_libero_env(task, args.env_resolution, args.seed)
 
         # Start episodes
         task_episodes, task_successes = 0, 0
@@ -114,15 +115,17 @@ def eval_libero(args: Args) -> None:
                     # IMPORTANT: rotate 180 degrees to match train preprocessing
                     img = np.ascontiguousarray(obs["agentview_image"][::-1, ::-1])
                     wrist_img = np.ascontiguousarray(obs["robot0_eye_in_hand_image"][::-1, ::-1])
+
+                    # Save original-resolution image for replay video
+                    replay_images.append(image_tools.convert_to_uint8(img))
+
+                    # Resize to model input size for inference
                     img = image_tools.convert_to_uint8(
                         image_tools.resize_with_pad(img, args.resize_size, args.resize_size)
                     )
                     wrist_img = image_tools.convert_to_uint8(
                         image_tools.resize_with_pad(wrist_img, args.resize_size, args.resize_size)
                     )
-
-                    # Save preprocessed image for replay video
-                    replay_images.append(img)
 
                     if not action_plan:
                         # Finished executing previous action chunk -- compute new chunk
