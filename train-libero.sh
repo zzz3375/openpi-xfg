@@ -25,7 +25,7 @@ echo "=== Computing normalization stats ==="
 
 # ── Step 2: 启动训练 ──
 echo "=== Starting training ==="
-XLA_PYTHON_CLIENT_MEM_FRACTION=0.95 WANDB_MODE=disabled \
+XLA_PYTHON_CLIENT_MEM_FRACTION=0.95 \
     uv run scripts/train.py "$CONFIG" \
     --exp-name="$EXP_NAME" --num-workers=0 --resume \
     --checkpoint-base-dir "$DATA_ROOT/openpi_checkpoints" #--overwrite 

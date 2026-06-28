@@ -743,23 +743,30 @@ _CONFIGS = [
     TrainConfig(
         name="pi05_libero_low_mem_finetune",
         # Here is an example of loading a pi0 model for LoRA fine-tuning.
-        model=pi0_config.Pi0Config(pi05=True, paligemma_variant="gemma_2b_lora", action_expert_variant="gemma_300m_lora"),
+        model=pi0_config.Pi0Config(pi05=True),
         data=LeRobotLiberoDataConfig(
             repo_id="physical-intelligence/libero",
             base_config=DataConfig(prompt_from_task=True),
             extra_delta_transform=True,
         ),
         weight_loader=weight_loaders.CheckpointWeightLoader("gs://openpi-assets/checkpoints/pi05_base/params"),
-        num_train_steps=30_000,
-        save_interval=6_000,
-        keep_period=6_000,
+        num_train_steps=400_000,
+        save_interval=40_000,
+        keep_period=40_000,
+        lr_schedule=_optimizer.CosineDecaySchedule(
+            warmup_steps=1_000,
+            peak_lr=5e-5,
+            decay_steps=100_000,
+            decay_lr=5e-6,
+        ),
+        batch_size=8,
         # The freeze filter defines which parameters should be frozen during training.
         # We have a convenience function in the model config that returns the default freeze filter
         # for the given model config for LoRA finetuning. Just make sure it matches the model config
         # you chose above.
-        freeze_filter=pi0_config.Pi0Config(pi05=True,
-            paligemma_variant="gemma_2b_lora", action_expert_variant="gemma_300m_lora"
-        ).get_freeze_filter(),
+        freeze_filter=nnx.Not(
+            nnx_utils.PathRegex(".*(llm.*_1|action_in_proj|action_out_proj|time_mlp_in|time_mlp_out).*")
+        ),
         # Turn off EMA for LoRA finetuning.
         ema_decay=None,
     ),
