@@ -6,7 +6,7 @@
 # Run the container:
 # docker run --rm -it --network=host -v .:/app -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY --gpus all libero /bin/bash
 
-FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04@sha256:2d913b09e6be8387e1a10976933642c73c840c0b735f0bf3c28d97fc9bc422e0
+FROM nvidia/cuda:12.8.0-runtime-ubuntu22.04
 COPY --from=ghcr.io/astral-sh/uv:0.5.1 /uv /uvx /bin/
 
 RUN apt-get update && \
@@ -43,7 +43,7 @@ COPY ./packages/openpi-client/pyproject.toml /tmp/openpi-client/pyproject.toml
 
 # Install python dependencies.
 RUN uv venv --python 3.8 $UV_PROJECT_ENVIRONMENT
-RUN uv pip sync /tmp/requirements.txt /tmp/requirements-libero.txt /tmp/openpi-client/pyproject.toml --extra-index-url https://download.pytorch.org/whl/cu113 --index-strategy=unsafe-best-match
+RUN uv pip sync /tmp/requirements.txt /tmp/requirements-libero.txt /tmp/openpi-client/pyproject.toml --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy=unsafe-best-match
 ENV PYTHONPATH=/app:/app/packages/openpi-client/src:/app/third_party/libero
 
 # Create a default config file to avoid an input prompt from LIBERO's init script.
