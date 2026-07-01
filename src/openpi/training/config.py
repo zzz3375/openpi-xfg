@@ -992,7 +992,7 @@ _CONFIGS = [
         keep_period=20_000,
         num_workers=0,
         freeze_filter=nnx.Not(
-            nnx_utils.PathRegex(".*(llm.*_1|action_in_proj|action_out_proj|time_mlp_in|time_mlp_out).*")
+            nnx_utils.PathRegex(".*(llm.*_1|action_in_proj|action_out_proj|time_mlp_in|time_mlp_out|PaliGemma.*img).*")
         )
     ),
     #
